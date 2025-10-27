@@ -12,9 +12,9 @@ import (
 
 var db *sql.DB
 
-var users = map[string]string{"admin": "password", "di": "2004", "lian": "3340"} //username : password
-var cookies = map[string]string{"cook": "admin"}                                 //cookies : username
-var data = map[string]string{"admin": "secret", "di": "cookies"}                 //username : secret data
+var users = map[string]string{"admin": "password", "lian": "3340"} //username : password
+var cookies = map[string]string{"cook": "admin"}                   //cookies : username
+var data = map[string]string{"admin": "secret", "di": "cookies"}   //username : secret data
 
 func Connect(path string) {
 	var err error
@@ -106,15 +106,16 @@ func Authenticate(username string, password string) bool {
 }
 
 func CheckSession(session_id string) (string, error) {
-	query := "Select username from sessions where session_id = ?;"
+	query := "Select username, expiry from sessions where session_id = ?;"
 	row := db.QueryRow(query, session_id)
 	if row.Err() != nil {
 		log.Panic(row.Err())
 	}
 
 	var username string
+	var expiry time.Time
 
-	if err := row.Scan(&username); err != nil {
+	if err := row.Scan(&username, &expiry); err != nil {
 		if err == sql.ErrNoRows {
 			//log.Println("No user found with the given ID.")
 		} else {
@@ -122,12 +123,16 @@ func CheckSession(session_id string) (string, error) {
 		}
 		return "", errors.New("No User found with the given ID.")
 	}
+
+	if expiry.Before(time.Now()) {
+		return "", errors.New("Session Expired")
+	}
 	return username, nil
 }
 
 func StoreSession(username string, session_id string) {
 	command := "INSERT OR REPLACE into sessions(session_id, username, expiry) values (?,?,?);"
-	_, err := db.Exec(command, session_id, username, time.Now())
+	_, err := db.Exec(command, session_id, username, time.Now().Add(2*time.Minute))
 	if err != nil {
 		log.Panic(err)
 	}
@@ -156,7 +161,7 @@ func GetUserData(username string) (string, error) {
 func GarbageCollector() {
 	command := "DELETE FROM sessions where expiry < ?"
 	for {
-		time.Sleep(30 * time.Minute)
+		time.Sleep(1 * time.Minute)
 
 		result, err := db.Exec(command, time.Now())
 		if err != nil {

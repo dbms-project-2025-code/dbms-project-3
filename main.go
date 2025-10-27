@@ -68,7 +68,6 @@ func index_page(w http.ResponseWriter, r *http.Request) {
 		} else {
 			log.Println(err)
 			fmt.Fprintln(w, "INDEX PAGE")
-
 		}
 	} else {
 		log.Println(err)
@@ -86,7 +85,6 @@ func checkSession(r *http.Request) (string, error) {
 		return "", errors.New("Unknown Error With Cookie")
 	}
 	return db.CheckSession(cookie.Value)
-
 }
 
 func checkSessionMiddleware(next http.HandlerFunc) http.HandlerFunc {
