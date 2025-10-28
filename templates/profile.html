@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alumni Profile | NSUT</title>
+    <link rel="stylesheet" href="profile.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="logo">
+        <img src="nsut.logo.png" alt="NSUT Logo" />
+        <h1>NSUT Alumni Portal</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="homepage.html">Home</a></li>
+          <li><a href="directory.html">Alumini Directory</a></li>
+          <li><a href="academic.html">Academic History</a></li>
+          <li><a href="notices.html">Notices/Events</a></li>
+        </ul>
+      </nav>
+      <button class="logout">Logout</button>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <!-- Profile Overview -->
+      <section class="profile-overview">
+        <div class="profile-pic">
+          <img src="profile-placeholder.png" alt="Profile Picture" />
+        </div>
+        <div class="profile-info">
+          <h2>Name</h2>
+          <p><strong>Roll Number:</strong></p>
+          <p><strong>Department:</strong></p>
+          <p><strong>Batch:</strong></p>
+          <p><strong>Email:</strong></p>
+          <p><strong>Phone:</strong></p>
+        </div>
+      </section>
+
+      <!-- Academic History -->
+      <section class="section-card">
+        <h3>Academic History</h3>
+        <ul>
+          <li><strong>Degree:</strong></li>
+          <li><strong>Specialization:</strong></li>
+          <li><strong>CGPA:</strong></li>
+          <li><strong>Year of Graduation:</strong></li>
+        </ul>
+      </section>
+
+      <!-- Professional Details -->
+      <section class="section-card">
+        <h3>Professional Details</h3>
+        <ul>
+          <li><strong>Company:</strong></li>
+          <li><strong>Position:</strong></li>
+          <li><strong>Location:</strong></li>
+          <li><strong>LinkedIn:</strong></li>
+        </ul>
+      </section>
+
+      <!-- Alumni Activities -->
+      <section class="section-card">
+        <h3>Campus Memories & Contributions</h3>
+        <p></p>
+      </section>
+
+      <!-- Notices / Events -->
+      <section class="section-card">
+        <h3>Notices & Announcements</h3>
+        <ul>
+          <li>Upcoming Alumni Meet</li>
+          <li>Networking Event</li>
+          <li>Guest Lecture Opportunities</li>
+        </ul>
+      </section>
+
+      <!-- Account Settings -->
+      <section class="section-card">
+        <h3>Account Settings</h3>
+        <button>Edit Profile</button>
+        <button>Change Password</button>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>&copy; 2025 NSUT Alumni Portal | All Rights Reserved</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> |
+        <a href="#">Contact</a>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<!--logout button to signup page-->
+<script>
+  const logoutBtn = document.querySelector('.logout');
+
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('user');
+    sessionStorage.clear();
+
+    window.location.href = 'login.html';
+  });
+</script>

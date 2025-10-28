@@ -1,0 +1,147 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f4f9;
+}
+
+/* Header */
+header {
+  background-color: #002147;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+}
+
+.logo img {
+  height: 100px;
+  border-radius: 50%;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: #c1121f;
+}
+
+.logout-btn {
+  height: 40px;
+  background-color: #c1121f;
+  border: none;
+  padding: 8px 15px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.logout-btn:hover {
+  background: #db1a27;
+}
+
+/* Main Content */
+main {
+  flex: 1;
+  padding: 40px 60px;
+}
+
+main h1 {
+  text-align: center;
+  color: #002147;
+  margin-bottom: 40px;
+  font-size: 32px;
+}
+
+/* Notices Section */
+.notices {
+  margin-top: 20px;
+}
+
+.notices h2 {
+  color: #c1121f;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.notice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.notice-card {
+  background: white;
+  border-radius: 10px;
+  width: 80%;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-left: 5px solid #002147;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.notice-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.notice-card h3 {
+  color: #002147;
+  margin-bottom: 8px;
+}
+
+.notice-card p {
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: #333;
+}
+
+.notice-card .date {
+  font-size: 13px;
+  color: gray;
+}
+
+/* Footer */
+footer {
+  background: #002855;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  margin-top: 40px;
+}
+
+.footer-links {
+  margin-top: 8px;
+}
+
+.footer-links a {
+  color: white;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}

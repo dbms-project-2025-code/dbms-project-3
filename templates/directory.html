@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alumni Directory | NSUT Alumni Portal</title>
+    <link rel="stylesheet" href="directory.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="logo">
+        <img src="nsut.logo.png" alt="NSUT Logo" />
+      </div>
+      <nav>
+        <ul>
+          <li><a href="homepage.html">Profile</a></li>
+          <li><a href="directory.html" class="active">Alumni Directory</a></li>
+          <li><a href="academic.html">Academic History</a></li>
+          <li><a href="notices.html">Notices / Events</a></li>
+        </ul>
+      </nav>
+      <button class="logout-btn">Logout</button>
+    </header>
+
+    <!-- Search and Filter Section -->
+    <section class="search-section">
+      <input type="text" placeholder="Search by name or roll number..." />
+      <select>
+        <option value="">Select Department</option>
+        <option value="CSAI">CSAI</option>
+        <option value="CSE">CSE</option>
+        <option value="CSDS">CSDS</option>
+        <option value="IT">IT</option>
+        <option value="ITNS">ITNS</option>
+        <option value="MAC">MAC</option>
+        <option value="ECE">ECE</option>
+        <option value="MECHANICAL">MECHANICAL</option>
+      </select>
+      <select>
+        <option value="">Select Batch</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+        <option value="2020">2020</option>
+      </select>
+      <button>Search</button>
+    </section>
+
+    <!-- Alumni Cards Section -->
+    <main class="alumni-container">
+      <div class="alumni-card">
+        <img src="profile-placeholder.png" alt="Profile Picture" />
+        <h3>Name</h3>
+        <p><strong>Batch:</strong> 2022</p>
+        <p><strong>Department:</strong> CSE</p>
+        <p><strong>Company:</strong> Google</p>
+        <button>View Profile</button>
+      </div>
+
+      <div class="alumni-card">
+        <img src="profile-placeholder.png" alt="Profile Picture" />
+        <h3>Name</h3>
+        <p><strong>Batch:</strong> 2023</p>
+        <p><strong>Department:</strong> IT</p>
+        <p><strong>Company:</strong> Microsoft</p>
+        <button>View Profile</button>
+      </div>
+
+      <div class="alumni-card">
+        <img src="profile-placeholder.png" alt="Profile Picture" />
+        <h3>Name</h3>
+        <p><strong>Batch:</strong> 2024</p>
+        <p><strong>Department:</strong> ECE</p>
+        <p><strong>Company:</strong> Amazon</p>
+        <button>View Profile</button>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 NSUT Alumni Portal | All Rights Reserved</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> |
+        <a href="#">Contact</a>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<!--logout button to signup page-->
+<script>
+  const logoutBtn = document.querySelector('.logout-btn');
+
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('user');
+    sessionStorage.clear();
+
+    window.location.href = 'login.html';
+  });
+</script>
+

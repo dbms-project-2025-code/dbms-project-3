@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notices & Events | NSUT Alumni Portal</title>
+  <link rel="stylesheet" href="notices.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="nsut.logo.png" alt="NSUT Logo">
+    </div>
+    <nav>
+      <ul>
+        <li><a href="homepage.html">Profile</a></li>
+        <li><a href="directory.html">Alumni Directory</a></li>
+        <li><a href="academic.html">Academic History</a></li>
+        <li><a href="notices.html" class="active">Notices / Events</a></li>
+      </ul>
+    </nav>
+    <button class="logout-btn">Logout</button>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <h1>Notices & Events</h1>
+    <!-- Notices Section -->
+    <section class="notices">
+      <h2>Recent Notices</h2>
+      <div class="notice-list">
+        <div class="notice-card">
+          <h3>Update Your Alumni Profile</h3>
+          <p>Please log in and update your academic and professional details by February 20.</p>
+          <span class="date">Posted on: Feb 1, 2025</span>
+        </div>
+
+        <div class="notice-card">
+          <h3>Scholarship Application Open</h3>
+          <p>Applications for the Alumni Endowment Scholarship are open till March 5, 2025.</p>
+          <span class="date">Posted on: Jan 28, 2025</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+        <p>&copy; 2025 NSUT Alumni Portal | All Rights Reserved</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a> | 
+            <a href="#">Terms of Use</a> | 
+            <a href="#">Contact</a>
+        </div>
+    </footer>
+</body>
+</html>
+
+<!--logout button to signup page-->
+<script>
+  const logoutBtn = document.querySelector('.logout-btn');
+
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('user');
+    sessionStorage.clear();
+
+    window.location.href = 'login.html';
+  });
+</script>
