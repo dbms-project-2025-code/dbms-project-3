@@ -28,6 +28,10 @@ func main() {
 	defer db.Close()
 	go db.GarbageCollector()
 
+
+	fs := http.FileServer(http.Dir("static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
 	h := http.HandlerFunc(welcomeHandler)
 	for _, m := range middleware {
 		h = m(h)
@@ -54,10 +58,10 @@ func login_page(w http.ResponseWriter, r *http.Request) {
 			setSessionID(username, w, r)
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 		} else {
-			tpl.ExecuteTemplate(w, "login.html", map[string]any{"incorrect_pass": true})
+			tpl.ExecuteTemplate(w, "login2.html", map[string]any{"incorrect_pass": true})
 		}
 	} else {
-		tpl.ExecuteTemplate(w, "login.html", nil)
+		tpl.ExecuteTemplate(w, "login2.html", nil)
 	}
 }
 
