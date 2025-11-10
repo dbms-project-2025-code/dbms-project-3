@@ -4,67 +4,137 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Notices & Events | NSUT Alumni Portal</title>
-  <link rel="stylesheet" href="notices.css">
+  <link rel="stylesheet" href="static/notices.css">
 </head>
 <body>
   <!-- Header -->
   <header>
     <div class="logo">
-      <img src="nsut.logo.png" alt="NSUT Logo">
+      <img src="static/nsut.logo.png" alt="NSUT Logo">
     </div>
     <nav>
       <ul>
-        <li><a href="homepage.html">Profile</a></li>
-        <li><a href="directory.html">Alumni Directory</a></li>
-        <li><a href="academic.html">Academic History</a></li>
-        <li><a href="notices.html" class="active">Notices / Events</a></li>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/directory">Alumni Directory</a></li>
+        <li><a href="/academic_history">Academic History</a></li>
+        <li><a href="/notices" class="active">Notices / Events</a></li>
+        <li><a href="/donation">Donations</a></li>
       </ul>
     </nav>
-    <button class="logout-btn">Logout</button>
+    <form action="/logout" method="POST" style="display:inline;"><button class="logout-btn">Logout</button></form>
   </header>
 
   <!-- Main Content -->
   <main>
     <h1>Notices & Events</h1>
-    <!-- Notices Section -->
     <section class="notices">
-      <h2>Recent Notices</h2>
       <div class="notice-list">
-        <div class="notice-card">
-          <h3>Update Your Alumni Profile</h3>
-          <p>Please log in and update your academic and professional details by February 20.</p>
-          <span class="date">Posted on: Feb 1, 2025</span>
+        {{range .}}
+        <div class="notice-card" 
+             data-title="{{.Title}}" 
+             data-description="{{.Description.String}}" 
+             data-date="{{.Date.String}}" 
+             data-location="{{.Location.String}}" 
+             data-type="{{.Type}}" 
+	     data-id="{{.Id}}"
+             data-created="{{.Created}}"
+data-rsvp="{{.RSVP.String}}">
+          <h3>{{.Title}}</h3>
+          <span class="date">Posted on: {{.Created}}</span>
         </div>
-
-        <div class="notice-card">
-          <h3>Scholarship Application Open</h3>
-          <p>Applications for the Alumni Endowment Scholarship are open till March 5, 2025.</p>
-          <span class="date">Posted on: Jan 28, 2025</span>
-        </div>
+        {{end}}
       </div>
     </section>
   </main>
+<!-- Popup Modal -->
+<div id="popupModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+    <p id="modalDate"></p>
+    <p id="modalLocation"></p>
+
+    <!-- RSVP Form -->
+
+<form id="rsvpForm" action="/rsvp" method="POST"
+      style="display:none; flex-direction: column; gap: 10px; margin-top: 15px;">
+  <input type="hidden" name="eventid" id="rsvpEventId" />
+
+  <label for="rsvpSelect"><strong>RSVP</strong></label>
+  <select id="rsvpSelect" name="response" required>
+    <option value="" disabled selected>Choose your response</option>
+    <option value="Accept">Accept</option>
+    <option value="Maybe">Maybe</option>
+    <option value="Decline">Decline</option>
+  </select>
+
+  <button type="submit" id="rsvpSubmit" class="rsvp-btn">Submit RSVP</button>
+</form>
+ </div>
+</div>
 
   <!-- Footer -->
   <footer>
-        <p>&copy; 2025 NSUT Alumni Portal | All Rights Reserved</p>
-        <div class="footer-links">
-            <a href="#">Privacy Policy</a> | 
-            <a href="#">Terms of Use</a> | 
-            <a href="#">Contact</a>
-        </div>
-    </footer>
-</body>
+    <p>&copy; 2025 NSUT Alumni Portal | All Rights Reserved</p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a> | 
+      <a href="#">Terms of Use</a> | 
+      <a href="#">Contact</a>
+    </div>
+  </footer>
+
+  <!-- JS -->
+ <script>
+  const modal = document.getElementById('popupModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDescription = document.getElementById('modalDescription');
+  const modalDate = document.getElementById('modalDate');
+  const modalLocation = document.getElementById('modalLocation');
+  const rsvpForm = document.getElementById('rsvpForm');
+  const rsvpEventId = document.getElementById('rsvpEventId');
+  const noticeCards = document.querySelectorAll('.notice-card');
+  const closeModal = document.getElementById('closeModal');
+
+document.querySelectorAll('.notice-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const type = card.dataset.type;
+    const rsvpValue = card.dataset.rsvp; // from Go template
+    const rsvpSelect = document.getElementById('rsvpSelect');
+    const rsvpSubmit = document.getElementById('rsvpSubmit');
+
+    modalTitle.textContent = card.dataset.title;
+    modalDescription.textContent = card.dataset.description || 'No description available.';
+    modalDate.textContent = (type === 'Event' && card.dataset.date) ? '📅 ' + card.dataset.date : '';
+    modalLocation.textContent = (type === 'Event' && card.dataset.location) ? '📍 ' + card.dataset.location : '';
+
+    if (type === 'Event') {
+      rsvpForm.style.display = 'flex';
+      rsvpEventId.value = card.dataset.id;
+
+      // Reset form each time modal opens
+      rsvpSelect.disabled = false;
+      rsvpSubmit.style.display = 'inline-block';
+      rsvpSelect.value = "";
+
+      // If RSVP already exists → disable form and prefill
+      if (rsvpValue && rsvpValue.trim() !== "") {
+        rsvpSelect.value = rsvpValue; // match option
+        rsvpSelect.disabled = true;
+        rsvpSubmit.style.display = 'none'; // hide submit button
+      }
+    } else {
+      rsvpForm.style.display = 'none';
+    }
+
+    modal.style.display = 'flex';
+  });
+});
+
+closeModal.onclick = () => (modal.style.display = 'none');
+window.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
+   // form submission handled normally to post eventid and response to server
+</script> </body>
 </html>
 
-<!--logout button to signup page-->
-<script>
-  const logoutBtn = document.querySelector('.logout-btn');
-
-  logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('user');
-    sessionStorage.clear();
-
-    window.location.href = 'login.html';
-  });
-</script>

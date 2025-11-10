@@ -14,19 +14,21 @@ body {
   flex-direction: column;
 }
 
-/* Header */
+/* Header */ 
 header {
-  background-color: #002147;
+  background-color: #002855;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 40px;
+  padding: 15px 40px;
 }
 
 .logo img {
+  width: 100px;
   height: 100px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 nav ul {
@@ -66,47 +68,51 @@ main {
   flex: 1;
 }
 
-/* Search Section */
 .search-section {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 25px;
-  gap: 15px;
-  padding: 20px;
   background: #f1f1f1;
+  padding: 20px;
+}
+
+/* Search Section */
+.search-section form {
+  display: flex;
+  align-items: center; /* keeps button in line */
+  gap: 12px;
+  flex-wrap: wrap; /* allows wrapping on smaller screens */
+  margin: 0; /* removes default browser margin */
 }
 
 .search-section input,
 .search-section select {
-  padding: 10px;
-  border-radius: 5px;
-  height: 25px;
+  height: 38px;
+  border-radius: 6px;
   border: 1px solid #ccc;
+  font-size: 14px;
+  padding: 0 12px;
   width: 200px;
 }
 
 .search-section button {
+  height: 38px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 6px;
   background: #002147;
   color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
+  font-weight: 600;
   cursor: pointer;
-  height: 25px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.1s ease;
 }
 
 .search-section button:hover {
-  background: #094284;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: #003070;
+  transform: translateY(-1px);
 }
-
 /* Alumni Cards */
 .alumni-container {
   display: flex;
@@ -141,7 +147,7 @@ main {
 }
 
 .alumni-card h3 {
-  color: #002147;
+  color: #002855;
   margin-bottom: 8px;
 }
 
@@ -152,7 +158,7 @@ main {
 
 .alumni-card button {
   margin-top: 10px;
-  background: #002147;
+  background: #002855;
   border: none;
   padding: 8px 12px;
   border-radius: 5px;
@@ -167,21 +173,23 @@ main {
 
 /* Footer */
 footer {
-  background: #002147;
+  background: #002855;
   color: white;
   text-align: center;
-  padding: 12px 0;
-  font-size: 14px;
-  margin-top: auto; /* Ensures it stays at the bottom */
+  padding: 15px;
+  margin-top: auto;
 }
+
+.footer-links {
+  margin-top: 8px;
+}
+
 .footer-links a {
   color: white;
   text-decoration: none;
   margin: 0 5px;
 }
-.footer-links {
-  margin-top: 8px;
-}
+
 .footer-links a:hover {
   text-decoration: underline;
 }

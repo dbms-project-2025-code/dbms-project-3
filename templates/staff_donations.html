@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Donations - NSUT</title>
+    <link href="https://fonts.googleapis.static/com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="static/staff_donation.css" />
+  </head>
+
+  <body>
+    <!-- Header / Navbar -->
+    <header>
+      <div class="logo">
+        <img src="static/nsut.logo.png" alt="NSUT Logo" />
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/staff_homepage">Home</a></li>
+          <li><a href="/staff_notice">Notices</a></li>
+          <li><a href="/staff_donations" class="active">Donations</a></li>
+        </ul>
+      </nav>
+      <form action="/logout" method="POST" style="display:inline;"><button class="logout-btn">Logout</button></form>
+    </header>
+
+    <main>
+      <!-- Donation Section -->
+      <section class="donation-archive">
+        <h2>Alumni Donations</h2>
+        <p>Below is the record of all alumni contributions supporting NSUT’s growth.</p>
+
+        <div class="donation-list">
+          <div class="donation-card">
+            <h3>Dr. Meena Sharma</h3>
+            <p><strong>Batch:</strong> 1989</p>
+            <p><strong>Purpose:</strong> Research Fund</p>
+            <p><strong>Amount:</strong> ₹10,000</p>
+            <div class="donation-date">Donated on: 25 Oct 2025</div>
+            <p><em>“Happy to contribute to NSUT’s growth.”</em></p>
+          </div>
+
+          <div class="donation-card">
+            <h3>Alumni Batch 2020</h3>
+            <p><strong>Batch:</strong> 2020</p>
+            <p><strong>Purpose:</strong> Student Welfare</p>
+            <p><strong>Amount:</strong> ₹25,000</p>
+            <div class="donation-date">Donated on: 28 Oct 2025</div>
+            <p><em>“Best wishes to juniors!”</em></p>
+          </div>
+
+          <div class="donation-card">
+            <h3>Mr. Rajesh Gupta</h3>
+            <p><strong>Batch:</strong> 1995</p>
+            <p><strong>Purpose:</strong> Infrastructure Development</p>
+            <p><strong>Amount:</strong> ₹15,000</p>
+            <div class="donation-date">Donated on: 30 Oct 2025</div>
+            <p><em>“For the new library block.”</em></p>
+          </div>
+
+          <div class="donation-card">
+            <h3>Ms. Ananya Kapoor</h3>
+            <p><strong>Batch:</strong> 2015</p>
+            <p><strong>Purpose:</strong> Student Welfare</p>
+            <p><strong>Amount:</strong> ₹12,500</p>
+            <div class="donation-date">Donated on: 31 Oct 2025</div>
+            <p><em>“Proud NSUTian!”</em></p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p>&copy; 2025 NSUT Alumni Portal | All Rights Reserved</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> |
+        <a href="#">Contact</a>
+      </div>
+    </footer>
+  </body>
+</html>
+<!--logout button to signup page-->
+<script>
+  const logoutBtn = document.querySelector('.logout-btn');
+
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('user');
+    sessionStorage.clear();
+
+    window.location.href = '/select_user';
+  });
+</script>

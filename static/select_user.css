@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-} 
+}
 
 /* Body styling */
 body {
@@ -15,16 +15,16 @@ body {
     justify-content: center;
     min-height: 100vh;
 }
-
 /* Logo styling */
 .login-logo img {
-    margin-top: 30px;
+    margin-top: 90px;
     width: 220px;
     height: 220px;
     border-radius: 50%;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     object-fit: cover;
 }
+
 
 /* Heading styling */
 h1 {
@@ -33,56 +33,37 @@ h1 {
     text-align: center;
 }
 
-/* Form container */
-form {
-    background-color: white;
-    padding: 30px 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    width: 300px;
+/* User selection links (as buttons) */
+.user-selection {
     display: flex;
     flex-direction: column;
+    gap: 20px;
 }
 
-/* Label styling */
-form label {
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Input styling */
-form input {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-/* Button styling */
-form button {
-    padding: 10px;
-    background-color:#c1121f;
+.user-selection a {
+    display: inline-block;
+    text-align: center;
+    padding: 15px;
+    background-color: #c1121f;
     color: white;
-    border: none;
+    text-decoration: none;
     border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
+    font-size: 18px;
+    width: 250px;
     transition: background 0.3s;
 }
 
-form button:hover {
-    background-color: #c1121f;
+.user-selection a:hover {
+    background-color: #a50f1b;
 }
 
-/* Footer styling */
+/* Footer */
 footer {
   background: #002855;
   color: white;
   text-align: center;
   padding: 15px;
-  margin-top: 40px;
+  margin-top: auto;
 }
 
 .footer-links {

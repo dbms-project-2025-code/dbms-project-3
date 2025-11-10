@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alumni Profile | NSUT</title>
+    <link rel="stylesheet" href="/static/profile.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="logo">
+        <img src="static/nsut.logo.png" alt="NSUT Logo" />
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/home">Home</a></li>
+          <li><a href="/profile" class="active">Profile</a></li>
+          <li><a href="/directory">Alumni Directory</a></li>
+          <li><a href="/academic_history">Academic History</a></li>
+          <li><a href="/notices">Notices / Events</a></li>
+          <li><a href="/donation">Donations</a></li>
+        </ul>
+      </nav>
+      <form action="/logout" method="POST" style="display:inline;"><button class="logout-btn">Logout</button></form>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <!-- Profile Overview -->
+      <section class="profile-overview">
+        <div class="profile-pic">
+          <img src="/static/profile-placeholder.jpg" alt="Profile Picture" />
+        </div>
+        <div class="profile-info">
+	<h2>{{.alumnus.Name}}</h2>
+	<p><strong>Roll Number: {{.alumnus.Roll_no}}</strong></p>
+	<p><strong>Department: {{.alumnus.Department}}</strong></p>
+	<p><strong>Batch: {{.alumnus.Batch}}</strong></p>
+	<p><strong>Email: {{.alumnus.Email}}</strong></p>
+	<p><strong>Phone: {{.alumnus.Phone_no}}</strong></p>
+        </div>
+      </section>
+      <!-- Professional Details -->
+<section class="section-card">
+  <div class="section-header">
+    <h3>Professional Details</h3>
+  </div>
+
+  <!-- Example existing entries -->
+  <div class="company-entry" data-id="1">
+					{{range .employments}}
+    <ul>
+	<li><strong>Company:</strong>{{.Company}}</li>
+	<li><strong>Start Year:</strong>{{.Starting}}</li>
+	<li><strong>End Year:</strong>{{.Ending}}</li>
+	<li><strong>Designation:</strong>{{.Designation}}</li>
+	<li><strong>Location:</strong>{{.Location}}</li>
+    </ul>
+						{{end}}
+    </div>
+    <hr>
+</section>
+
+     </main>
+   <!-- FOOTER -->
+    <footer>
+      <p>&copy; 2025 NSUT Alumni Portal | All Rights Reserved</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> |
+        <a href="#">Contact</a>
+      </div>
+    </footer>
+  </body>
+</html>

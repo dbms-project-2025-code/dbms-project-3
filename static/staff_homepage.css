@@ -3,27 +3,28 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Make body full height and use flex layout */
-html, body {
-  height: 100%;
+/* Body as flex column to stick footer at bottom */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: white;
+  color: black;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-} 
+}
 
-/* Header */
+/* Header / Navbar */
 header {
-  background-color: #002855;
-  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
+  background-color: #002855;
 }
 
-.logo img {
+header .logo-img img {
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -33,13 +34,13 @@ header {
 nav ul {
   list-style: none;
   display: flex;
-  gap: 30px;
+  gap: 55px;
 }
 
 nav ul li a {
   color: white;
   text-decoration: none;
-  font-weight: 500;
+  transition: color 0.3s;
 }
 
 nav ul li a:hover,
@@ -61,41 +62,38 @@ nav ul li a.active {
 .logout-btn:hover {
   background: #db1a27;
 }
-
-/* Main Body - Spread across page */
+/* Main content should grow to push footer down */
 main {
+  flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex: 1; /* ensures footer stays at bottom */
-  padding: 50px;
-  background-color: #f9f9f9;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 0;
 }
 
+/* Profile container */
 .profile-container {
   display: flex;
-  justify-content: space-around;
-  width: 100%;
-  max-width: 1200px;
-  gap: 50px;
-  flex-wrap: wrap;
-  align-items: center;
+  background-color: white;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 900px;
+  gap: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .profile-pic img {
-  height: 200px;
-  width: 200px;
+  width: 150px;
   border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #002855;
 }
 
 .profile-details {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  font-size: 20px;
-  flex-grow: 1;
+  justify-content: center;
+  gap: 10px;
 }
 
 /* Footer */

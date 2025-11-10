@@ -1,54 +1,55 @@
+/* Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-body {
+/* Layout setup to keep footer at bottom */
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   background: #f6f7fb;
   color: #333;
 }
 
-/* HEADER */
+/* Header */
 header {
+  background-color: #002855;
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #002855;
-  color: #fff;
   padding: 15px 40px;
 }
 
-header .logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-header .logo img {
+.logo img {
+  width: 100px;
   height: 100px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 nav ul {
-  display: flex;
   list-style: none;
-  gap: 25px;
+  display: flex;
+  gap: 30px;
 }
 
 nav ul li a {
   color: white;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s;
 }
 
-nav ul li a:hover {
+nav ul li a:hover,
+nav ul li a.active {
   color: #c1121f;
 }
 
-.logout {
+.logout-btn {
   height: 40px;
   background-color: #c1121f;
   border: none;
@@ -58,8 +59,9 @@ nav ul li a:hover {
   cursor: pointer;
   border-radius: 5px;
 }
-.logout:hover {
-  background-color: #db1a27;
+
+.logout-btn:hover {
+  background: #db1a27;
 }
 
 /* MAIN CONTENT */
@@ -69,6 +71,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: 25px;
+  flex: 1; /* ensures footer stays at bottom */
 }
 
 /* PROFILE OVERVIEW */
@@ -127,13 +130,20 @@ main {
   background: #154e8f;
 }
 
-/* FOOTER */
+/* Footer */
 footer {
   background: #002855;
   color: white;
   text-align: center;
-  padding: 15px;
-  margin-top: auto;
+  padding: 20px 0;
+  width: 100%;
+  position: relative;
+  left: 0;
+  bottom: 0;
+}
+
+footer p {
+  margin: 5px 0;
 }
 
 .footer-links {
@@ -143,9 +153,116 @@ footer {
 .footer-links a {
   color: white;
   text-decoration: none;
-  margin: 0 5px;
+  margin: 0 8px;
+  font-weight: 500;
 }
 
 .footer-links a:hover {
   text-decoration: underline;
+}
+
+/* Modal */
+.modal-content {
+  background: white;
+  padding: 32px;
+  border-radius: 10px;
+  width: 400px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.16);
+  position: relative;
+}
+
+#editModal {
+  display: none; /* hidden by default */
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.3);
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+#editForm {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 14px 16px;
+  margin-top: 16px;
+}
+
+#editForm label {
+  align-self: center;
+  font-weight: 500;
+  color: #154e8f;
+}
+
+#editForm input {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+#editForm button {
+  grid-column: span 2;
+  margin-top: 14px;
+  margin-right: 8px;
+  background: #154e8f;
+  color: white;
+  border: none;
+  padding: 7px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#editForm #cancelBtn {
+  background: #aaa;
+}
+
+.close {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  font-size: 22px;
+  color: #c1121f;
+  cursor: pointer;
+}
+
+/* Section header and buttons */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-btn {
+  background-color: #004aad;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.add-btn:hover {
+  background-color: #003080;
+}
+
+.actions {
+  margin-top: 8px;
+}
+
+.delete-btn {
+  background: #b22222;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #8b0000;
 }

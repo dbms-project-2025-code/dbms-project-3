@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Notices - NSUT</title>
+    <link href="https://fonts.googleapis.static/com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="static/staff_notice.css" />
+  </head>
+
+  <body>
+    <!-- Header / Navbar -->
+    <header>
+      <div class="logo">
+        <img src="static/nsut.logo.png" alt="NSUT Logo" />
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/staff_homepage">Home</a></li>
+          <li><a href="/staff_notice" class="active">Notices</a></li>
+          <li><a href="/staff_donations">Donations</a></li>
+        </ul>
+      </nav>
+      <form action="/logout" method="POST" style="display:inline;"><button class="logout-btn">Logout</button></form>
+    </header>
+
+    <main>
+      <!-- Add Notice -->
+      <div class="add-notice-container1212">
+        <h2>Add New Notice</h2>
+        <input type="text" placeholder="Enter notice title..." />
+        <textarea placeholder="Write your notice here..."></textarea>
+        <button>+ Add Notice</button>
+      </div>
+
+      <!-- Past Notices -->
+      <section class="notice-archive">
+        <h2>Previous Notices</h2>
+        <div class="notice-list" id="archiveList">
+          <div class="notice-card">
+            <h3>Mid-Sem Exam Schedule Released</h3>
+            <p>The mid-semester exams will start from 15th November. Please check the official website for your branch timetable.</p>
+            <div class="notice-date">Posted on: 30 Oct 2025</div>
+          </div>
+          <div class="notice-card">
+            <h3>Annual Sports Meet 2025</h3>
+            <p>Registrations for the Annual Sports Meet are now open. All departments are encouraged to participate.</p>
+            <div class="notice-date">Posted on: 25 Oct 2025</div>
+          </div>
+          <div class="notice-card">
+            <h3>Staff Meeting Reminder</h3>
+            <p>All staff are requested to attend the meeting on 3rd Nov 2025 at 2:00 PM in the main conference hall.</p>
+            <div class="notice-date">Posted on: 22 Oct 2025</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 NSUT Alumni Portal | All Rights Reserved</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> |
+        <a href="#">Contact</a>
+      </div>
+    </footer>
+  </body>
+</html>
+<!--logout button to signup page-->
+<script>
+  const logoutBtn = document.querySelector('.logout-btn');
+
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('user');
+    sessionStorage.clear();
+
+    window.location.href = '/select_user';
+  });
+</script>

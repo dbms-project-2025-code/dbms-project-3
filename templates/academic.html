@@ -4,23 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Academic History | NSUT Alumni Portal</title>
-  <link rel="stylesheet" href="academic.css">
+  <link rel="stylesheet" href="static/academic.css">
 </head>
 <body>
   <!-- Header -->
   <header>
     <div class="logo">
-      <img src="nsut.logo.png" alt="NSUT Logo">
+      <img src="/static/nsut.logo.png" alt="NSUT Logo">
     </div>
     <nav>
       <ul>
-        <li><a href="homepage.html">Profile</a></li>
-        <li><a href="directory.html">Alumni Directory</a></li>
-        <li><a href="academic.html" class="active">Academic History</a></li>
-        <li><a href="notices.html">Notices / Events</a></li>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/directory">Alumni Directory</a></li>
+        <li><a href="/academic_history" class="active">Academic History</a></li>
+        <li><a href="/notices">Notices / Events</a></li>
+         <li><a href="/donation">Donations</a></li>
       </ul>
     </nav>
-    <button class="logout-btn">Logout</button>
+    <form action="/logout" method="POST" style="display:inline;"><button class="logout-btn">Logout</button></form>
   </header>
 
   <!-- Main Content -->
@@ -31,7 +33,6 @@
       <div class="student-info">
         <p><strong>Name:</strong> </p>
         <p><strong>Roll Number:</strong> </p>
-        <p><strong>Course:</strong> </p>
         <p><strong>Batch:</strong> </p>
       </div>
 
@@ -41,69 +42,19 @@
             <th>Semester</th>
             <th>SGPA</th>
             <th>CGPA</th>
-            <th>Remarks</th>
           </tr>
         </thead>
         <tbody>
+	{{range .}}
           <tr>
-            <td>1</td>
-            <td></td>
-            <td></td>
-            <td></td>
+	<td>{{.Semester}}</td>
+	<td>{{.SGPA}}</td>
+	<td>{{.CGPA}}</td>
           </tr>
-          <tr>
-            <td>2</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>7</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>8</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+	{{end}}
         </tbody>
       </table>
 
-      <div class="achievements">
-        <h3>Achievements / Awards</h3>
-        <ul>
-          <li></li>
-        </ul>
-      </div>
-
-      <button class="download-btn">Download Transcript</button>
     </div>
   </main>
 
@@ -127,6 +78,6 @@
     localStorage.removeItem('user');
     sessionStorage.clear();
 
-    window.location.href = 'login.html';
+    window.location.href = '/select_user';
   });
 </script>

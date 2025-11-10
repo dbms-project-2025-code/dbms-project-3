@@ -4,24 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alumni Profile | NSUT</title>
-    <link rel="stylesheet" href="profile.css" />
+    <link rel="stylesheet" href="static/profile.css" />
   </head>
   <body>
     <!-- HEADER -->
     <header>
       <div class="logo">
-        <img src="nsut.logo.png" alt="NSUT Logo" />
-        <h1>NSUT Alumni Portal</h1>
+        <img src="static/nsut.logo.png" alt="NSUT Logo" />
       </div>
       <nav>
         <ul>
-          <li><a href="homepage.html">Home</a></li>
-          <li><a href="directory.html">Alumini Directory</a></li>
-          <li><a href="academic.html">Academic History</a></li>
-          <li><a href="notices.html">Notices/Events</a></li>
+          <li><a href="/home">Home</a></li>
+          <li><a href="/profile" class="active">Profile</a></li>
+          <li><a href="/directory">Alumni Directory</a></li>
+          <li><a href="/academic_history">Academic History</a></li>
+          <li><a href="/notices">Notices / Events</a></li>
+          <li><a href="/donation">Donations</a></li>
         </ul>
       </nav>
-      <button class="logout">Logout</button>
+      <form action="/logout" method="POST" style="display:inline;"><button class="logout-btn">Logout</button></form>
     </header>
 
     <!-- MAIN CONTENT -->
@@ -29,64 +30,75 @@
       <!-- Profile Overview -->
       <section class="profile-overview">
         <div class="profile-pic">
-          <img src="profile-placeholder.png" alt="Profile Picture" />
+          <img src="/static/profile-placeholder.jpg" alt="Profile Picture" />
         </div>
         <div class="profile-info">
-          <h2>Name</h2>
-          <p><strong>Roll Number:</strong></p>
-          <p><strong>Department:</strong></p>
-          <p><strong>Batch:</strong></p>
-          <p><strong>Email:</strong></p>
-          <p><strong>Phone:</strong></p>
+	<h2>{{.alumnus.Name}}</h2>
+	<p><strong>Roll Number: {{.alumnus.Roll_no}}</strong></p>
+	<p><strong>Department: {{.alumnus.Department}}</strong></p>
+	<p><strong>Batch: {{.alumnus.Batch}}</strong></p>
+	<p><strong>Email: {{.alumnus.Email}}</strong></p>
+	<p><strong>Phone: {{.alumnus.Phone_no}}</strong></p>
         </div>
       </section>
-
-      <!-- Academic History -->
-      <section class="section-card">
-        <h3>Academic History</h3>
-        <ul>
-          <li><strong>Degree:</strong></li>
-          <li><strong>Specialization:</strong></li>
-          <li><strong>CGPA:</strong></li>
-          <li><strong>Year of Graduation:</strong></li>
-        </ul>
-      </section>
-
       <!-- Professional Details -->
-      <section class="section-card">
-        <h3>Professional Details</h3>
-        <ul>
-          <li><strong>Company:</strong></li>
-          <li><strong>Position:</strong></li>
-          <li><strong>Location:</strong></li>
-          <li><strong>LinkedIn:</strong></li>
-        </ul>
-      </section>
+<section class="section-card">
+  <div class="section-header">
+    <h3>Professional Details</h3>
+    <button type="button" id="addBtn" class="add-btn">+ Add</button>
+  </div>
 
-      <!-- Alumni Activities -->
-      <section class="section-card">
-        <h3>Campus Memories & Contributions</h3>
-        <p></p>
-      </section>
+  <!-- Example existing entries -->
+  <div class="company-entry" data-id="1">
+					{{range .employments}}
+    <ul>
+	<li><strong>Company:</strong>{{.Company}}</li>
+	<li><strong>Start Year:</strong>{{.Starting}}</li>
+	<li><strong>End Year:</strong>{{.Ending}}</li>
+	<li><strong>Designation:</strong>{{.Designation}}</li>
+	<li><strong>Location:</strong>{{.Location}}</li>
+    </ul>
+    <div class="actions">
+      <button type="button" class="edit-btn" data-id="1">Edit</button>
+      <form action="/delete_employment" method="POST" class="delete-form" style="display:inline;">
+	<input type="hidden" name="id" value="{{.Id}}">
+        <button type="submit" class="delete-btn">Delete</button>
+      </form>
+						{{end}}
+    </div>
+    <hr>
+  </div>
+</section>
 
-      <!-- Notices / Events -->
-      <section class="section-card">
-        <h3>Notices & Announcements</h3>
-        <ul>
-          <li>Upcoming Alumni Meet</li>
-          <li>Networking Event</li>
-          <li>Guest Lecture Opportunities</li>
-        </ul>
-      </section>
+     </main>
+<!-- Modal -->
+<div id="editModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <h3 id="modalTitle">Edit Professional Details</h3>
+    <form id="editForm" method="POST" action="/save_employment">
+      <input type="hidden" id="editId" name="id" />
 
-      <!-- Account Settings -->
-      <section class="section-card">
-        <h3>Account Settings</h3>
-        <button>Edit Profile</button>
-        <button>Change Password</button>
-      </section>
-    </main>
+      <label for="editCompany">Company:</label>
+      <input type="text" id="editCompany" name="company" required />
 
+      <label for="editStartYear">Starting Year:</label>
+      <select id="editStartYear" name="startYear" required></select>
+
+      <label for="editEndYear">Ending Year:</label>
+      <select id="editEndYear" name="endYear" required></select>
+
+      <label for="editDesignation">Designation:</label>
+      <input type="text" id="editDesignation" name="designation" required />
+
+      <label for="editLocation">Location:</label>
+      <input type="text" id="editLocation" name="location" />
+
+      <button type="submit" id="saveBtn">Save</button>
+      <button type="button" id="cancelBtn">Cancel</button>
+    </form>
+  </div>
+</div>
     <!-- FOOTER -->
     <footer>
       <p>&copy; 2025 NSUT Alumni Portal | All Rights Reserved</p>
@@ -95,17 +107,76 @@
         <a href="#">Contact</a>
       </div>
     </footer>
+
+    <!-- SCRIPT -->
+<script>
+const modal = document.getElementById('editModal');
+const closeModal = document.getElementById('closeModal');
+const cancelBtn = document.getElementById('cancelBtn');
+const addBtn = document.getElementById('addBtn');
+const modalTitle = document.getElementById('modalTitle');
+const startYearSelect = document.getElementById('editStartYear');
+const endYearSelect = document.getElementById('editEndYear');
+
+// Populate dropdowns dynamically
+const currentYear = new Date().getFullYear();
+for (let year = currentYear; year >= 1980; year--) {
+  const opt1 = document.createElement('option');
+  opt1.value = opt1.textContent = year;
+  startYearSelect.appendChild(opt1);
+
+  const opt2 = document.createElement('option');
+  opt2.value = opt2.textContent = year;
+  endYearSelect.appendChild(opt2);
+}
+
+// Function to open modal
+function openModal(isEdit = false, data = {}) {
+  modal.style.display = 'flex';
+  document.getElementById('editId').value = data.id || '';
+  document.getElementById('editCompany').value = data.company || '';
+  document.getElementById('editDesignation').value = data.designation || '';
+  document.getElementById('editLocation').value = data.location || '';
+  document.getElementById('editStartYear').value = data.startYear || '';
+  document.getElementById('editEndYear').value = data.endYear || '';
+  modalTitle.textContent = isEdit ? 'Edit Professional Details' : 'Add Professional Details';
+}
+
+// Open modal for Add
+addBtn.addEventListener('click', () => openModal(false));
+
+// Open modal for Edit
+document.querySelectorAll('.edit-btn').forEach(button => {
+  button.addEventListener('click', e => {
+    const entry = e.target.closest('.company-entry');
+    const items = entry.querySelectorAll('ul li');
+    const data = {
+      id: entry.dataset.id,
+      company: items[0].textContent.replace('Company:', '').trim(),
+      startYear: items[1].textContent.replace('Start Year:', '').trim(),
+      endYear: items[2].textContent.replace('End Year:', '').trim(),
+      designation: items[3].textContent.replace('Designation:', '').trim(),
+      location: items[4].textContent.replace('Location:', '').trim()
+};
+    openModal(true, data);
+  });
+});
+
+// Delete confirmation
+document.querySelectorAll('.delete-form').forEach(form => {
+  form.addEventListener('submit', e => {
+    if (!confirm('Are you sure you want to delete this record?')) {
+      e.preventDefault();
+    }
+  });
+});
+
+// Close modal logic
+closeModal.onclick = () => (modal.style.display = 'none');
+cancelBtn.onclick = () => (modal.style.display = 'none');
+window.onclick = event => {
+  if (event.target === modal) modal.style.display = 'none';
+};
+</script>
   </body>
 </html>
-
-<!--logout button to signup page-->
-<script>
-  const logoutBtn = document.querySelector('.logout');
-
-  logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('user');
-    sessionStorage.clear();
-
-    window.location.href = 'login.html';
-  });
-</script>

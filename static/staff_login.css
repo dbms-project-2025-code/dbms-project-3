@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-} 
+}
 
 /* Body styling */
 body {
@@ -25,6 +25,9 @@ body {
     margin-bottom: 20px;
     object-fit: cover;
 }
+
+
+
 
 /* Heading styling */
 h1 {
@@ -63,7 +66,7 @@ form input {
 /* Button styling */
 form button {
     padding: 10px;
-    background-color:#c1121f;
+    background-color: #c1121f;
     color: white;
     border: none;
     border-radius: 5px;
@@ -73,16 +76,17 @@ form button {
 }
 
 form button:hover {
-    background-color: #c1121f;
+    background-color: #a50f1b;
 }
 
-/* Footer styling */
+
+/* Footer */
 footer {
   background: #002855;
   color: white;
   text-align: center;
   padding: 15px;
-  margin-top: 40px;
+  margin-top: auto;
 }
 
 .footer-links {

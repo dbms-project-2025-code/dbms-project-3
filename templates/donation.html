@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donations - NSUT</title>
+    <link rel="stylesheet" href="static/donation.css" />
+  </head>
+  <body>
+		{{if eq .success true}}
+<script>
+		alert("Donation SUCCESSFUL. Donation ID = {{.id}}");
+		window.location.href = "/donation";
+    </script>
+		{{else if eq .success false}}
+		window.location.href = "/donation";
+<script>
+		alert("Donation FAILED");
+    </script>
+		{{end}}
+    <!-- Header -->
+    <header>
+      <div class="logo">
+        <img src="static/nsut.logo.png" alt="NSUT Logo" />
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/home">Home</a></li>
+          <li><a href="/profile">Profile</a></li>
+          <li><a href="/directory">Alumni Directory</a></li>
+          <li><a href="/academic_history">Academic History</a></li>
+          <li><a href="/notices" >Notices / Events</a></li>
+          <li><a href="/donation" class="active">Donations</a></li>
+        </ul>
+      </nav>
+      <form action="/logout" method="POST" style="display:inline;"><button class="logout-btn">Logout</button></form>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <section class="donation-section">
+        <h1>Support NSUT Initiatives</h1>
+        <p>Your generous donations help us fund student welfare programs, research initiatives, and infrastructure development at NSUT.</p>
+	<h1>Total Amount Donated : {{.total}}</h1>
+				<br></br>
+        <div class="donation-form">
+          <h2>Make a Donation</h2>
+          <form method="post">
+            <input type="number" name="amount" min="0" placeholder="Amount (INR)" required />
+            <textarea name="message" placeholder="Message (optional)"></textarea>
+            <button type="submit">Donate Now</button>
+          </form>
+        </div>
+
+        <div class="recent-donations">
+          <h2>Recent Donations</h2>
+          <ul>
+		{{range .donations}}
+	<li><strong>{{.Name}}</strong> donated ₹{{.Amount}}.</li>
+		{{end}}
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 NSUT Alumni Portal | All Rights Reserved</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> |
+        <a href="#">Contact</a>
+      </div>
+    </footer>
+  </body>
+</html>
+<!--logout button to signup page-->
+<script>
+  const logoutBtn = document.querySelector('.logout-btn');
+
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('user');
+    sessionStorage.clear();
+
+    window.location.href = 'select_user.html';
+  });
+</script>

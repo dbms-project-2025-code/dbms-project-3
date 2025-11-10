@@ -15,17 +15,19 @@ html, body {
 
 /* Header */
 header {
-  background-color: #002147;
+  background-color: #002855;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 40px;
+  padding: 15px 40px;
 }
 
 .logo img {
+  width: 100px;
   height: 100px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 nav ul {
@@ -69,7 +71,7 @@ main {
 
 main h1 {
   text-align: center;
-  color: #002147;
+  color: #002855;
   margin-bottom: 40px;
   font-size: 32px;
 }
@@ -98,7 +100,7 @@ main h1 {
   width: 80%;
   padding: 20px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  border-left: 5px solid #002147;
+  border-left: 5px solid #002855;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -108,7 +110,7 @@ main h1 {
 }
 
 .notice-card h3 {
-  color: #002147;
+  color: #002855;
   margin-bottom: 8px;
 }
 
@@ -129,7 +131,7 @@ footer {
   color: white;
   text-align: center;
   padding: 15px;
-  margin-top: 40px;
+  margin-top: auto;
 }
 
 .footer-links {
@@ -144,4 +146,216 @@ footer {
 
 .footer-links a:hover {
   text-decoration: underline;
+}
+
+/* ============================= */
+/* === EVENT / NOTICE TAGS ==== */
+/* ============================= */
+.notice-card .tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  color: #fff;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.tag.notice {
+  background: #007bff; /* blue for notices */
+}
+
+.tag.event {
+  background: #28a745; /* green for events */
+}
+
+/* ============================= */
+/* === MODAL POPUP STYLING ==== */
+/* ============================= */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  position: relative;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 22px;
+  color: #c1121f;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #8b0000;
+}
+
+.modal-content h2 {
+  color: #002855;
+  margin-bottom: 12px;
+}
+
+.modal-content p {
+  color: #333;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+/* ============================= */
+/* ===== RSVP BUTTON STYLE ===== */
+/* ============================= */
+/* RSVP Dropdown Styling */
+#rsvpSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+#rsvpSelect {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+#rsvpSelect:focus {
+  outline: none;
+  border-color: #002855;
+}
+
+.rsvp-btn {
+  background-color: #002855;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.rsvp-btn:hover {
+  background-color: #154e8f;
+}
+.rsvp-btn {
+  background-color: #002855;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 15px;
+  transition: background 0.2s;
+}
+
+.rsvp-btn:hover {
+  background-color: #154e8f;
+}
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  display: none; /* hidden by default */
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* make sure it’s above everything */
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  position: relative;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 22px;
+  color: #c1121f;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #8b0000;
+}
+
+
+#rsvpForm label {
+  color: #002855;
+  font-weight: 600;
+}
+
+#rsvpForm select {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+#rsvpForm select:focus {
+  border-color: #002855;
+  outline: none;
+}
+
+.rsvp-btn {
+  background-color: #002855;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.rsvp-btn:hover {
+  background-color: #154e8f;
+}
+#rsvpSelect:disabled {
+  background-color: #f0f0f0;
+  color: #666;
+  cursor: not-allowed;
 }

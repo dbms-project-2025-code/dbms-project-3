@@ -14,17 +14,19 @@ html, body {
 
 /* Header */
 header {
-  background-color: #002147;
+  background-color: #002855;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 40px;
+  padding: 15px 40px;
 }
 
 .logo img {
+  width: 100px;
   height: 100px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 nav ul {
@@ -68,7 +70,7 @@ main {
 }
 
 main h1 {
-  color: #002147;
+  color: #002855;
   margin-bottom: 30px;
   font-size: 32px;
 }
@@ -102,7 +104,7 @@ main h1 {
 }
 
 .academic-table th {
-  background: #002147;
+  background: #002855;
   color: white;
 }
 
@@ -117,7 +119,7 @@ main h1 {
 }
 
 .download-btn {
-  background: #002147;
+  background: #002855;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -135,7 +137,7 @@ footer {
   color: white;
   text-align: center;
   padding: 15px;
-  margin-top: 40px;
+  margin-top: auto;
 }
 
 .footer-links {
