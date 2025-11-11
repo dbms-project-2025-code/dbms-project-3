@@ -65,14 +65,3 @@
     </footer>
   </body>
 </html>
-<!--logout button to signup page-->
-<script>
-  const logoutBtn = document.querySelector('.logout-btn');
-
-  logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('user');
-    sessionStorage.clear();
-
-    window.location.href = '/select_user';
-  });
-</script>

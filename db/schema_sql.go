@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS Department (
 
 const createFaculty = `
 CREATE TABLE IF NOT EXISTS Faculty (
-    faculty_id INTEGER PRIMARY KEY,
+    id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     department_id INTEGER,
     FOREIGN KEY (department_id) REFERENCES Department(id)
@@ -108,6 +108,25 @@ CREATE TABLE IF NOT EXISTS sessions (
     FOREIGN KEY (username) REFERENCES credentials(username)
 );
 `
+const createDonation_Backup = `
+CREATE TABLE IF NOT EXISTS Donation_Backup (
+    id INTEGER,
+    roll_no TEXT,
+    amount REAL,
+    message TEXT,
+    timestamp DATETIME,
+    backup_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+)
+;`
+
+const createBackupTrigger = `
+CREATE TRIGGER IF NOT EXISTS backup_donation_after_insert
+AFTER INSERT ON Donation
+BEGIN
+    INSERT INTO Donation_Backup (id, roll_no, amount, message, timestamp)
+    VALUES (NEW.id, NEW.roll_no, NEW.amount, NEW.message, NEW.timestamp);
+END;
+;`
 
 var SchemaTables = []string{
 	createDepartment,
@@ -121,4 +140,6 @@ var SchemaTables = []string{
 	createEmploymentHistory,
 	createCredentials,
 	createSessions,
+	createDonation_Backup,
+	createBackupTrigger,
 }

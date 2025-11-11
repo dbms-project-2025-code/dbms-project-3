@@ -8,40 +8,44 @@
 /* Body as flex column to stick footer at bottom */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: white;
-  color: black;
+ background: linear-gradient(180deg, #f4f7fa 0%, #eef1f5 100%);
+  color: #333;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* Header / Navbar */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
   background-color: #002855;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
-header .logo-img img {
+
+.logo img {
   width: 100px;
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
 }
-
 nav ul {
   list-style: none;
   display: flex;
-  gap: 55px;
+  gap: 25px;
 }
 
 nav ul li a {
   color: white;
   text-decoration: none;
-  transition: color 0.3s;
+  font-weight: 500;
+  padding: 8px 15px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
+
 
 nav ul li a:hover,
 nav ul li a.active {
@@ -62,6 +66,8 @@ nav ul li a.active {
 .logout-btn:hover {
   background: #db1a27;
 }
+
+
 /* Main content should grow to push footer down */
 main {
   flex: 1;

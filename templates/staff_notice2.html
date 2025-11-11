@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Notices - NSUT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="static/staff_notice2.css" />
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="logo">
+        <img src="static/nsut.logo.png" alt="NSUT Logo" />
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/staff_home">Home</a></li>
+          <li><a href="/staff_notice" class="active">Notices</a></li>
+          <li><a href="/staff_donations">Donations</a></li>
+        </ul>
+      </nav>
+      <form action="/logout" method="POST" style="display:inline;">
+        <button class="logout-btn">Logout</button>
+      </form>
+    </header>
+
+    <main>
+      <!-- Action Buttons -->
+      <div class="button-container">
+        <button class="action-btn" id="createNoticeBtn">+ Create New Notice</button>
+        <button class="action-btn" id="createEventBtn">+ Create New Event</button>
+      </div>
+
+      <!-- Modal -->
+      <div id="popupModal" class="modal">
+        <div class="modal-content">
+          <span class="close-btn" id="closeModal">&times;</span>
+          <h2 id="modalTitle">Create</h2>
+          <form method="POST" action="/create_event_notice" id="modalForm">
+            <input type="hidden" name="type" id="entryType" value="notice" />
+
+            <label>Title:</label>
+            <input type="text" name="title" placeholder="Enter title..." required />
+
+            <label>Description:</label>
+            <textarea name="description" placeholder="Enter details..." required></textarea>
+
+            <!-- Event fields -->
+            <div id="eventFields" hidden>
+              <label>Date:</label>
+              <input type="date" id="eventDate" name="date" />
+
+              <label>Location:</label>
+              <input type="text" id="eventLocation" name="location" placeholder="Enter event location..." />
+            </div>
+
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Past Notices -->
+      <section class="notice-archive">
+        <h2>Previous Notices</h2>
+        <div class="notice-list">
+          <div class="notice-card">
+            <h3>Annual Sports Meet 2025</h3>
+            <p>Registrations for the Annual Sports Meet are now open. All departments are encouraged to participate.</p>
+            <div class="notice-date">Posted on: 25 Oct 2025</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 NSUT Alumni Portal | All Rights Reserved</p>
+    </footer>
+
+    <!-- Inline JS -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.getElementById("popupModal");
+        const closeModal = document.getElementById("closeModal");
+        const modalTitle = document.getElementById("modalTitle");
+        const entryType = document.getElementById("entryType");
+        const createNoticeBtn = document.getElementById("createNoticeBtn");
+        const createEventBtn = document.getElementById("createEventBtn");
+        const eventFields = document.getElementById("eventFields");
+        const eventDate = document.getElementById("eventDate");
+        const eventLocation = document.getElementById("eventLocation");
+        const modalForm = document.getElementById("modalForm");
+
+        // Open notice modal
+        createNoticeBtn.onclick = () => {
+          modalForm.reset();
+          modal.classList.add("show");
+          modalTitle.textContent = "Create New Notice";
+          entryType.value = "notice";
+          eventFields.hidden = true;
+          eventDate.removeAttribute("required");
+          eventLocation.removeAttribute("required");
+        };
+
+        // Open event modal
+        createEventBtn.onclick = () => {
+          modalForm.reset();
+          modal.classList.add("show");
+          modalTitle.textContent = "Create New Event";
+          entryType.value = "event";
+          eventFields.hidden = false;
+          eventDate.setAttribute("required", "true");
+          eventLocation.setAttribute("required", "true");
+        };
+
+        // Close modal
+        closeModal.onclick = () => modal.classList.remove("show");
+        window.onclick = (e) => {
+          if (e.target === modal) modal.classList.remove("show");
+        };
+
+        // Validate before native submit
+        modalForm.addEventListener("submit", (e) => {
+          if (entryType.value === "event") {
+            if (!eventDate.value.trim() || !eventLocation.value.trim()) {
+              alert("⚠️ Please fill in both Date and Location for the event.");
+              e.preventDefault(); // stop submission
+              return false;
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

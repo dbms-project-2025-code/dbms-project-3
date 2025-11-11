@@ -10,9 +10,9 @@
         <img src="static/nsut.logo.png" alt="NSUT Logo">
     </div>
     <h1>Welcome to NSUT Staff</h1>
-    <form>
-        <label for="staff_id">Staff ID:</label>
-        <input type="text" id="staff_id" name="staff_id"><br><br>
+    <form method="post">
+        <label for="username">Staff ID:</label>
+        <input type="text" id="username" name="username"><br><br>
 
         <label for="password">Password:</label>
         <input type="password" id="password" name="password"><br><br>
@@ -30,25 +30,3 @@
     </footer>
 </body>
 </html>
-<!--login button to homepage-->
-<script>
-  const form = document.querySelector('form');
-
-  // Listen for the submit event
-  form.addEventListener('submit', (event) => {
-    event.preventDefault(); // Prevent the default form reload
-
-    const roll = document.getElementById('staff_id').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    // Basic validation
-    if (staff_id === "" || password === "") {
-      alert("Please enter both Roll Number and Password!");
-      return;
-    }
-
-    // You can add real login logic here (e.g., API or database check)
-    // For now, just redirect to homepage
-    window.location.href = "staff_homepage.html";
-  });
-</script>

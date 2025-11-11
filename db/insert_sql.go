@@ -70,7 +70,19 @@ INSERT OR REPLACE INTO Event (id, title, description, date, location) VALUES
 (2, 'Tech Talk', 'AI trends lecture', '2025-03-10 14:30:00', 'Main Hall'),
 (3, 'Sports Fest', 'Inter-dept tournament', '2025-02-20 09:00:00', 'Sports Field')
 `
-
+const insertNoticeData = `
+INSERT OR REPLACE INTO Notice (id, title, description) VALUES
+(1, 'Alumni Meet 2025', 'Join us for the Annual Alumni Meet on 20th December 2025 at NSUT Auditorium.'),
+(2, 'Placement Drive Announcement', 'Top companies are visiting campus next month. Register before 25th November 2025.'),
+(3, 'Scholarship Applications Open', 'Applications for Merit-based scholarships are now open. Apply through the student portal.'),
+(4, 'Website Maintenance', 'The alumni portal will be under maintenance from 10 PM to 2 AM on 15th November 2025.'),
+(5, 'New Research Grants', 'Faculty and alumni are invited to apply for the NSUT Innovation Grant 2025.'),
+(6, 'Internship Opportunities', 'Tech startups are offering internship positions for 3rd-year students. Check the career section.'),
+(7, 'Convocation Ceremony 2025', 'The annual convocation will be held on 10th January 2026. Graduates are requested to confirm attendance.'),
+(8, 'Blood Donation Camp', 'Join the Blood Donation Camp organized by the NSS unit on 18th November 2025 at the main hall.'),
+(9, 'Guest Lecture Series', 'Attend the AI and Robotics guest lecture by Dr. Meera Iyer on 22nd November 2025.'),
+(10, 'Hostel Allotment Notice', 'Hostel allotment results for the 2025 batch are now available on the official website.');
+`
 const insertEventParticipation = `
 INSERT OR REPLACE INTO Event_Participation (id, roll_no, rsvp) VALUES
 (1, '2020UIN3356', 'Accept'),
@@ -80,10 +92,10 @@ INSERT OR REPLACE INTO Event_Participation (id, roll_no, rsvp) VALUES
 `
 
 const insertFaculty = `
-INSERT OR REPLACE INTO Faculty (faculty_id, name, department_id) VALUES
-(101, 'Prof. D. Singh', 1),
-(102, 'Prof. A. John', 2),
-(103, 'Prof. R. Shah', 3)
+INSERT OR REPLACE INTO Faculty (id, name, department_id) VALUES
+('staff101', 'Prof. D. Singh', 1),
+('staff102', 'Prof. A. John', 2),
+('staff103', 'Prof. R. Shah', 3)
 `
 
 var insertData = []string{
@@ -92,6 +104,7 @@ var insertData = []string{
 	insertAlumni,
 	insertAcademicHistory,
 	insertEmploymentHistory,
+	insertNoticeData,
 	insertEventData,
 	insertEventParticipation,
 	insertDonation,

@@ -16,7 +16,7 @@
       </div>
       <nav>
         <ul>
-          <li><a href="/staff_homepage">Home</a></li>
+          <li><a href="/staff_home">Home</a></li>
           <li><a href="/staff_notice">Notices</a></li>
           <li><a href="/staff_donations" class="active">Donations</a></li>
         </ul>
@@ -31,42 +31,19 @@
         <p>Below is the record of all alumni contributions supporting NSUT’s growth.</p>
 
         <div class="donation-list">
-          <div class="donation-card">
-            <h3>Dr. Meena Sharma</h3>
-            <p><strong>Batch:</strong> 1989</p>
-            <p><strong>Purpose:</strong> Research Fund</p>
-            <p><strong>Amount:</strong> ₹10,000</p>
-            <div class="donation-date">Donated on: 25 Oct 2025</div>
-            <p><em>“Happy to contribute to NSUT’s growth.”</em></p>
-          </div>
 
+          	{{range .}}
           <div class="donation-card">
-            <h3>Alumni Batch 2020</h3>
-            <p><strong>Batch:</strong> 2020</p>
-            <p><strong>Purpose:</strong> Student Welfare</p>
-            <p><strong>Amount:</strong> ₹25,000</p>
-            <div class="donation-date">Donated on: 28 Oct 2025</div>
-            <p><em>“Best wishes to juniors!”</em></p>
-          </div>
-
-          <div class="donation-card">
-            <h3>Mr. Rajesh Gupta</h3>
-            <p><strong>Batch:</strong> 1995</p>
-            <p><strong>Purpose:</strong> Infrastructure Development</p>
-            <p><strong>Amount:</strong> ₹15,000</p>
-            <div class="donation-date">Donated on: 30 Oct 2025</div>
-            <p><em>“For the new library block.”</em></p>
-          </div>
-
-          <div class="donation-card">
-            <h3>Ms. Ananya Kapoor</h3>
-            <p><strong>Batch:</strong> 2015</p>
-            <p><strong>Purpose:</strong> Student Welfare</p>
-            <p><strong>Amount:</strong> ₹12,500</p>
-            <div class="donation-date">Donated on: 31 Oct 2025</div>
-            <p><em>“Proud NSUTian!”</em></p>
-          </div>
+	<h3>{{.Name}}</h3>
+        <p><strong>Batch:</strong> 2020</p>
+	<p><strong>Amount:</strong>{{.Amount}}</p>
+	<div class="donation-date">Donated on: {{.Time}}</div>
+	<p><em>{{.Message.String}}</em></p>
         </div>
+	{{end}}
+
+
+                  </div>
       </section>
     </main>
     <footer>
@@ -78,14 +55,3 @@
     </footer>
   </body>
 </html>
-<!--logout button to signup page-->
-<script>
-  const logoutBtn = document.querySelector('.logout-btn');
-
-  logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('user');
-    sessionStorage.clear();
-
-    window.location.href = '/select_user';
-  });
-</script>

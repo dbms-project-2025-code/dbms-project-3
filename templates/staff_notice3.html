@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Notices - NSUT</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="static/staff_notice3.css" />
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="logo">
+        <img src="static/nsut.logo.png" alt="NSUT Logo" />
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/staff_home">Home</a></li>
+          <li><a href="/staff_notice" class="active">Notices</a></li>
+          <li><a href="/staff_donations">Donations</a></li>
+        </ul>
+      </nav>
+      <form action="/logout" method="POST" style="display:inline;">
+        <button class="logout-btn">Logout</button>
+      </form>
+    </header>
+
+    <main>
+      <!-- Action Buttons -->
+      <div class="button-container">
+        <button class="action-btn" id="createNoticeBtn">+ Create New Notice</button>
+        <button class="action-btn" id="createEventBtn">+ Create New Event</button>
+      </div>
+
+      <!-- Create Modal -->
+      <div id="createModal" class="modal">
+        <div class="modal-content">
+          <span class="close-btn" id="closeCreateModal">&times;</span>
+          <h2 id="createModalTitle">Create</h2>
+
+          <form method="POST" action="/create_event_notice" id="createForm">
+            <input type="hidden" name="type" id="entryType" value="notice" />
+
+            <label>Title:</label>
+            <input type="text" name="title" placeholder="Enter title..." required />
+
+            <label>Description:</label>
+            <textarea name="description" placeholder="Enter details..." required></textarea>
+
+            <!-- Event fields -->
+            <div id="eventFields" hidden>
+              <label>Date:</label>
+              <input type="date" id="eventDate" name="date" />
+
+              <label>Location:</label>
+              <input
+                type="text"
+                id="eventLocation"
+                name="location"
+                placeholder="Enter event location..."
+              />
+            </div>
+
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- View Modal (for notices/events) -->
+      <div id="viewModal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <span id="closeViewModal" class="close">&times;</span>
+          <h2 id="viewTitle"></h2>
+          <p id="viewDescription"></p>
+          <p id="viewDate"></p>
+          <p id="viewLocation"></p>
+
+          <!-- RSVP Counts -->
+          <div id="rsvpStats" style="display:none; margin-top:15px;">
+            <h3>RSVP Summary:</h3>
+            <p>✅ Accepted: <span id="acceptedCount">0</span></p>
+            <p>🤔 Maybe: <span id="maybeCount">0</span></p>
+            <p>❌ Declined: <span id="declinedCount">0</span></p>
+<p> - No Response: <span id="noresponseCount">0</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Existing Notices / Events -->
+      <section class="notice-archive">
+        <h2>All Notices & Events</h2>
+        <div class="notice-list">
+
+         {{range .}}
+          <div
+            class="notice-card"
+            data-title="{{.Announcement.Title}}"
+            data-description="{{.Announcement.Description.String}}"
+            data-date="{{.Announcement.Date.String}}"
+            data-location="{{.Announcement.Location.String}}"
+            data-type="{{.Announcement.Type}}"
+            data-id="{{.Announcement.Id}}"
+            data-created="{{.Announcement.Created}}"
+            data-accepted="{{.Accept.Int32}}"
+            data-maybe="{{.Maybe.Int32}}"
+            data-declined="{{.Decline.Int32}}"
+            data-noresponse="{{.No_Response.Int32}}"
+          >
+            <h3>{{.Announcement.Title}}</h3>
+            <span class="date">Posted on: {{.Announcement.Created}}</span>
+          </div>
+          {{end}}
+        </div>
+      </section>
+    </main>
+
+    <footer>
+<p>&copy; 2025 NSUT Alumni Portal | All Rights Reserved</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> |
+        <a href="#">Contact</a>
+
+    </footer>
+
+    <!-- JS -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // --- CREATE MODAL LOGIC ---
+        const createModal = document.getElementById("createModal");
+        const closeCreateModal = document.getElementById("closeCreateModal");
+        const createModalTitle = document.getElementById("createModalTitle");
+        const entryType = document.getElementById("entryType");
+        const createNoticeBtn = document.getElementById("createNoticeBtn");
+        const createEventBtn = document.getElementById("createEventBtn");
+        const eventFields = document.getElementById("eventFields");
+        const eventDate = document.getElementById("eventDate");
+        const eventLocation = document.getElementById("eventLocation");
+        const createForm = document.getElementById("createForm");
+
+        createNoticeBtn.onclick = () => {
+          createForm.reset();
+          createModal.classList.add("show");
+          createModalTitle.textContent = "Create New Notice";
+          entryType.value = "notice";
+          eventFields.hidden = true;
+          eventDate.removeAttribute("required");
+          eventLocation.removeAttribute("required");
+        };
+
+        createEventBtn.onclick = () => {
+          createForm.reset();
+          createModal.classList.add("show");
+          createModalTitle.textContent = "Create New Event";
+          entryType.value = "event";
+          eventFields.hidden = false;
+          eventDate.setAttribute("required", "true");
+          eventLocation.setAttribute("required", "true");
+        };
+
+        closeCreateModal.onclick = () => createModal.classList.remove("show");
+        window.onclick = (e) => {
+          if (e.target === createModal) createModal.classList.remove("show");
+          if (e.target === viewModal) viewModal.style.display = "none";
+        };
+
+        // Validate before native submit
+        createForm.addEventListener("submit", (e) => {
+          if (entryType.value === "event") {
+            if (!eventDate.value.trim() || !eventLocation.value.trim()) {
+              alert("⚠️ Please fill in both Date and Location for the event.");
+              e.preventDefault();
+            }
+          }
+        });
+
+        // --- VIEW MODAL LOGIC ---
+        const viewModal = document.getElementById("viewModal");
+        const closeViewModal = document.getElementById("closeViewModal");
+        const viewTitle = document.getElementById("viewTitle");
+        const viewDescription = document.getElementById("viewDescription");
+        const viewDate = document.getElementById("viewDate");
+        const viewLocation = document.getElementById("viewLocation");
+        const rsvpStats = document.getElementById("rsvpStats");
+        const acceptedCount = document.getElementById("acceptedCount");
+        const maybeCount = document.getElementById("maybeCount");
+        const declinedCount = document.getElementById("declinedCount");
+const noresponseCount = document.getElementById("noresponseCount");
+
+        document.querySelectorAll(".notice-card").forEach((card) => {
+          card.addEventListener("click", () => {
+            const type = card.dataset.type;
+
+            viewTitle.textContent = card.dataset.title;
+            viewDescription.textContent =
+              card.dataset.description || "No description available.";
+            viewDate.textContent =
+              type === "Event" && card.dataset.date
+                ? "📅 " + card.dataset.date
+                : "";
+            viewLocation.textContent =
+              type === "Event" && card.dataset.location
+                ? "📍 " + card.dataset.location
+                : "";
+
+            if (type === "Event") {
+              rsvpStats.style.display = "block";
+              acceptedCount.textContent = card.dataset.accepted || "0";
+              maybeCount.textContent = card.dataset.maybe || "0";
+              declinedCount.textContent = card.dataset.declined || "0";
+	     noresponseCount.textContent = card.dataset.noresponse || "0"; 
+            } else {
+              rsvpStats.style.display = "none";
+            }
+
+            viewModal.style.display = "flex";
+          });
+        });
+
+        closeViewModal.onclick = () => (viewModal.style.display = "none");
+      });
+    </script>
+  </body>
+</html>

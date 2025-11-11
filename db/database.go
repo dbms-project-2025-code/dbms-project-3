@@ -17,15 +17,21 @@ type Alumnus struct {
 	Batch      string
 	Department string
 }
-
+type Staff struct {
+	Id         string
+	Name       string
+	Department string
+}
 type Academic_history struct {
 	Semester int
 	SGPA     float64
 	CGPA     float64
 }
 type Donation struct {
-	Name   string
-	Amount float64
+	Name    string
+	Amount  float64
+	Message sql.NullString
+	Time    string
 }
 type Employment struct {
 	Id          int
@@ -36,7 +42,7 @@ type Employment struct {
 	Designation string
 	Location    string
 }
-type Announcemnt struct {
+type Announcement struct {
 	Id          int
 	Type        string
 	Title       string
@@ -45,6 +51,14 @@ type Announcemnt struct {
 	Location    sql.NullString
 	Created     string
 	RSVP        sql.NullString
+}
+
+type Staff_Announcement struct {
+	Announcement Announcement
+	Accept       sql.NullInt32
+	Maybe        sql.NullInt32
+	Decline      sql.NullInt32
+	No_Response  sql.NullInt32
 }
 
 var db *sql.DB
@@ -126,9 +140,8 @@ func Authenticate(username string, password string, user_type string) bool {
 	return true
 }
 
-func CheckSession(session_id string) (string, error) {
-	query := "Select username, expiry from sessions where session_id = ? ;"
-	row := db.QueryRow(query, session_id)
+func CheckSession(session_id string, user_type string) (string, error) {
+	row := db.QueryRow(checkSession, session_id, user_type)
 	if row.Err() != nil {
 		log.Panic(row.Err())
 	}
@@ -182,7 +195,26 @@ func GetAlumni(username string) (Alumnus, error) {
 	}
 	return u, nil
 }
+func GetFaculty(username string) (Staff, error) {
+	row := db.QueryRow(getFaculty, username)
+	if row.Err() != nil {
+		log.Panic(row.Err())
+	}
 
+	var s Staff
+	err := row.Scan(&s.Id, &s.Name, &s.Department)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			//log.Println("No user found with the given ID.")
+		} else {
+			log.Println(err)
+		}
+		return Staff{}, errors.New("No User data found")
+	}
+	return s, nil
+
+}
 func GetSearchDirectory(query string, department string, batch string) ([]Alumnus, error) {
 	rows, err := db.Query(searchDirectory, query, department, batch)
 	if err != nil {
@@ -238,8 +270,8 @@ func GetAcademicHistory(username string) ([]Academic_history, error) {
 	return list_marks, nil
 }
 
-func GetPrevDonation() ([]Donation, error) {
-	rows, err := db.Query(getPrevDonations)
+func GetPrev3Donation() ([]Donation, error) {
+	rows, err := db.Query(getPrev3Donations)
 	if err != nil {
 		return nil, err
 	}
@@ -263,6 +295,32 @@ func GetPrevDonation() ([]Donation, error) {
 	return donations, nil
 }
 
+func GetPrevDonation() ([]Donation, error) {
+	rows, err := db.Query(getPrevDonations)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var donations []Donation
+
+	for rows.Next() {
+		var d Donation
+		var t time.Time
+		err := rows.Scan(&d.Name, &d.Amount, &d.Message, &t)
+		d.Time = t.Local().Format(time.RFC822)
+
+		if err != nil {
+			return donations, err
+		}
+		donations = append(donations, d)
+	}
+	if err = rows.Err(); err != nil {
+		return donations, err
+	}
+
+	return donations, nil
+}
 func GetTotalDonation(username string) (int64, error) {
 	row := db.QueryRow(getTotalDonationsByAlum, username)
 	if row.Err() != nil {
@@ -334,20 +392,46 @@ func DeleteEmploymentHistory(id int) error {
 
 	return err
 }
-func GetAllAnnouncements(username string) ([]Announcemnt, error) {
+func GetAllAnnouncements(username string) ([]Announcement, error) {
 	rows, err := db.Query(getNoticesAndEvents, username)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var announcements []Announcemnt
+	var announcements []Announcement
 
 	for rows.Next() {
 		var t time.Time
-		var a Announcemnt
+		var a Announcement
 		err := rows.Scan(&a.Id, &a.Title, &a.Description, &a.Date, &a.Location, &a.Type, &a.RSVP, &t)
 
 		a.Created = t.Format("2006-01-02")
+		if err != nil {
+			return announcements, err
+		}
+		announcements = append(announcements, a)
+	}
+	if err = rows.Err(); err != nil {
+		return announcements, err
+	}
+
+	return announcements, nil
+}
+
+func GetAllAnnouncementsAndResponses() ([]Staff_Announcement, error) {
+	rows, err := db.Query(getNoticesAndEventsAndResponses)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var announcements []Staff_Announcement
+
+	for rows.Next() {
+		var t time.Time
+		var a Staff_Announcement
+		err := rows.Scan(&a.Announcement.Id, &a.Announcement.Title, &a.Announcement.Description, &a.Announcement.Date, &a.Announcement.Location, &a.Announcement.Type, &t, &a.Accept, &a.Maybe, &a.Decline, &a.No_Response)
+
+		a.Announcement.Created = t.Format("2006-01-02")
 		if err != nil {
 			return announcements, err
 		}
@@ -363,7 +447,16 @@ func AddRVSP(eventid int, username string, response string) error {
 	_, err := db.Exec(addRSVP, eventid, username, response)
 	return err
 }
+func AddNotice(title, description string) error {
+	_, err := db.Exec(addNotice, title, description)
 
+	return err
+}
+func AddEvent(title, description, date, location string) error {
+	_, err := db.Exec(addEvent, title, description, date, location)
+
+	return err
+}
 func GarbageCollector() {
 	command := "DELETE FROM sessions where expiry < ?"
 	for {

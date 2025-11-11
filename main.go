@@ -40,6 +40,12 @@ func main() {
 		h = m(h)
 	}
 
+	mux.HandleFunc("/staff_login", staff_login_page)
+	mux.HandleFunc("/staff_home", staff_homepage)
+	mux.HandleFunc("/staff_notice", staff_notices)
+	mux.HandleFunc("POST /create_event_notice", create_notice_handler)
+	mux.HandleFunc("/staff_donations", staff_donation)
+
 	mux.HandleFunc("/login", alumni_login_page)
 	mux.HandleFunc("POST /logout", logout_handler)
 	mux.HandleFunc("/", select_user_page)
@@ -51,7 +57,6 @@ func main() {
 	mux.HandleFunc("POST /save_employment", save_employment)
 	mux.HandleFunc("/home", home_page) //alumni
 	mux.HandleFunc("GET /directory", directory_page)
-	mux.HandleFunc("/staff_login", staff_login_page)
 	mux.HandleFunc("/notices", notices_page)
 	mux.HandleFunc("POST /rsvp", rsvp_handler)
 	mux.HandleFunc("/index", index_page)
@@ -94,7 +99,8 @@ func logout_handler(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err != nil {
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
 	}
 
 	err = db.DeleteSession(cookie.Value)
@@ -103,7 +109,7 @@ func logout_handler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-	http.Redirect(w, r, "/login", http.StatusSeeOther)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 func staff_login_page(w http.ResponseWriter, r *http.Request) {
 	//users := map[string]string{"Hello": "Templates check"}
@@ -114,7 +120,7 @@ func staff_login_page(w http.ResponseWriter, r *http.Request) {
 
 		if db.Authenticate(username, password, "staff") {
 			setSessionID(username, w, r)
-			http.Redirect(w, r, "/index", http.StatusSeeOther)
+			http.Redirect(w, r, "/staff_home", http.StatusSeeOther)
 		} else {
 			tpl.ExecuteTemplate(w, "staff_login.html", nil) //map[string]any{"incorrect_pass": true})
 		}
@@ -123,7 +129,7 @@ func staff_login_page(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func index_page(w http.ResponseWriter, r *http.Request) {
-	if username, err := checkSession(r); err == nil {
+	if username, err := checkSession(r, "alumni"); err == nil {
 		if _, err := db.GetAlumni(username); err == nil {
 			//fmt.Fprintln(w, user_data.Data)
 		} else {
@@ -141,7 +147,7 @@ func select_user_page(w http.ResponseWriter, r *http.Request) {
 }
 
 func home_page(w http.ResponseWriter, r *http.Request) {
-	if username, err := checkSession(r); err == nil {
+	if username, err := checkSession(r, "alumni"); err == nil {
 		if user_data, err := db.GetAlumni(username); err == nil {
 			tpl.ExecuteTemplate(w, "homepage.html", user_data)
 		} else {
@@ -155,7 +161,7 @@ func home_page(w http.ResponseWriter, r *http.Request) {
 }
 
 func academic_history_page(w http.ResponseWriter, r *http.Request) {
-	if username, err := checkSession(r); err == nil {
+	if username, err := checkSession(r, "alumni"); err == nil {
 		if list_marks, err := db.GetAcademicHistory(username); err == nil {
 			tpl.ExecuteTemplate(w, "academic.html", list_marks)
 		} else {
@@ -180,9 +186,9 @@ func directory_page(w http.ResponseWriter, r *http.Request) {
 }
 
 func donation_page(w http.ResponseWriter, r *http.Request) {
-	if username, err := checkSession(r); err == nil {
+	if username, err := checkSession(r, "alumni"); err == nil {
 		if total_donated, err := db.GetTotalDonation(username); err == nil {
-			donations, _ := db.GetPrevDonation()
+			donations, _ := db.GetPrev3Donation()
 
 			args := make(map[string]any)
 			args["donations"] = donations
@@ -226,7 +232,7 @@ func handle_donation(username string, w http.ResponseWriter, r *http.Request) (i
 }
 
 func profile_page(w http.ResponseWriter, r *http.Request) {
-	if username, err := checkSession(r); err == nil {
+	if username, err := checkSession(r, "alumni"); err == nil {
 		if employments, err := db.GetEmploymentHistory(username); err == nil {
 			if alum, err := db.GetAlumni(username); err == nil {
 				args := make(map[string]any)
@@ -250,7 +256,7 @@ func profile_page(w http.ResponseWriter, r *http.Request) {
 
 }
 func view_profile_page(w http.ResponseWriter, r *http.Request) {
-	username, err := checkSession(r)
+	username, err := checkSession(r, "alumni")
 	if err != nil {
 		fmt.Fprintln(w, "SESSION EXPIRED")
 		log.Println(err)
@@ -297,7 +303,7 @@ func save_employment(w http.ResponseWriter, r *http.Request) {
 		Location:    location,
 	}
 
-	if username, err := checkSession(r); err == nil {
+	if username, err := checkSession(r, "alumni"); err == nil {
 		data.Roll_no = username
 		if id == "" {
 			err := db.AddEmploymentHistory(data)
@@ -330,7 +336,7 @@ func delete_employment(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/profile", http.StatusSeeOther)
 }
 func notices_page(w http.ResponseWriter, r *http.Request) {
-	username, err := checkSession(r)
+	username, err := checkSession(r, "alumni")
 	if err != nil {
 		fmt.Fprintln(w, "SESSION EXPIRED")
 		return
@@ -349,7 +355,7 @@ func rsvp_handler(w http.ResponseWriter, r *http.Request) {
 	id := r.FormValue("eventid")
 	response := r.FormValue("response")
 
-	username, err := checkSession(r)
+	username, err := checkSession(r, "alumni")
 	if err != nil {
 		fmt.Fprintln(w, "SESSION EXPIRED")
 		return
@@ -371,7 +377,7 @@ func rsvp_handler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/notices", http.StatusSeeOther)
 }
 
-func checkSession(r *http.Request) (string, error) {
+func checkSession(r *http.Request, user_type string) (string, error) {
 	//Returns username and check flag true means session found
 	cookie, err := r.Cookie("session_id")
 	if err != nil {
@@ -380,7 +386,7 @@ func checkSession(r *http.Request) (string, error) {
 		}
 		return "", errors.New("Unknown Error With Cookie")
 	}
-	return db.CheckSession(cookie.Value)
+	return db.CheckSession(cookie.Value, user_type)
 }
 
 func checkSessionMiddleware(next http.HandlerFunc) http.HandlerFunc {
@@ -404,6 +410,7 @@ func checkSessionMiddleware(next http.HandlerFunc) http.HandlerFunc {
 }
 
 func setSessionID(username string, w http.ResponseWriter, r *http.Request) {
+
 	session_id := generateSessionID()
 	cookie := &http.Cookie{
 		Name:     "session_id",
@@ -420,6 +427,85 @@ func setSessionID(username string, w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprintf(w, "Cookie has been set!")
 }
 
+func staff_homepage(w http.ResponseWriter, r *http.Request) {
+	username, err := checkSession(r, "staff")
+	if err != nil {
+		fmt.Fprintln(w, "SESSION EXPIRED")
+		log.Println(err)
+		return
+	}
+	log.Println(username)
+	staff, err := db.GetFaculty(username)
+	if err != nil {
+		fmt.Fprint(w, "SOMETHING WENT WRONG")
+		log.Println(err)
+		return
+	}
+
+	tpl.ExecuteTemplate(w, "staff_homepage.html", staff)
+}
+
+func staff_notices(w http.ResponseWriter, r *http.Request) {
+	_, err := checkSession(r, "staff")
+	if err != nil {
+		fmt.Fprintln(w, "SESSION EXPIRED")
+		log.Println(err)
+		return
+	}
+
+	announcements, err := db.GetAllAnnouncementsAndResponses()
+	if err != nil {
+		log.Println(err)
+	}
+
+	tpl.ExecuteTemplate(w, "staff_notice3.html", announcements)
+
+}
+
+func staff_donation(w http.ResponseWriter, r *http.Request) {
+	_, err := checkSession(r, "staff")
+	if err != nil {
+		fmt.Fprintln(w, "SESSION EXPIRED")
+		log.Println(err)
+		return
+	}
+
+	a, _ := db.GetPrevDonation()
+	tpl.ExecuteTemplate(w, "staff_donations.html", a)
+
+}
+func create_notice_handler(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	t := r.FormValue("type")
+	title := r.FormValue("title")
+	description := r.FormValue("description")
+	date := r.FormValue("date")
+	location := r.FormValue("location")
+
+	_, err := checkSession(r, "staff")
+	if err != nil {
+		fmt.Fprintln(w, "SESSION EXPIRED")
+		log.Println(err)
+		return
+	}
+	if t == "event" {
+		err = db.AddEvent(title, description, date, location)
+		if err != nil {
+			fmt.Fprint(w, "SOMETHING WENT WRONG")
+			log.Println(err)
+			return
+		}
+	} else if t == "notice" {
+		err = db.AddNotice(title, description)
+		if err != nil {
+			fmt.Fprint(w, "SOMETHING WENT WRONG")
+			log.Println(err)
+			return
+		}
+	}
+	http.Redirect(w, r, "/staff_notice", http.StatusSeeOther)
+
+}
 func generateSessionID() string {
 	id := make([]byte, 32)
 
